@@ -1,4 +1,4 @@
 # hotel_booking_api
 Hotel booking backend written in Go
 
-work still in progress
+still in the works, readme is on todo
