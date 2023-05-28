@@ -26,7 +26,7 @@ func main() {
 
 	fixtures.AddUser(store, "admin", "admin", true)
 
-	hotel := fixtures.AddHotel(store, "Aubrale", "Pakistan", 3.6, nil)
+	hotel := fixtures.AddHotel(store, "Auberine", "Asfall", 3.6, nil)
 	room := fixtures.AddRoom(store, "large", true, 55.55, hotel.ID)
 
 	booking := fixtures.AddBooking(store, user.ID, room.ID, time.Now(), time.Now().AddDate(0, 0, 2))
