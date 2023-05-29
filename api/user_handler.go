@@ -32,7 +32,7 @@ func (h *UserHandler) HandlePutUser(c *fiber.Ctx) error {
 	}
 
 	if err := c.BodyParser(&params); err != nil {
-		return err
+		return ErrBadRequest()
 	}
 
 	filter := bson.M{
@@ -64,7 +64,7 @@ func (h *UserHandler) HandlePostUser(c *fiber.Ctx) error {
 	var params types.CreateUserParams
 
 	if err := c.BodyParser(&params); err != nil {
-		return err
+		return ErrBadRequest()
 	}
 
 	if errors := params.Validate(); len(errors) > 0 {
@@ -107,7 +107,7 @@ func (h *UserHandler) HandleGetUsers(c *fiber.Ctx) error {
 	users, err := h.store.GetUsers(c.Context())
 
 	if err != nil {
-		return err
+		return ErrResourceNotFound("User")
 	}
 	return c.JSON(users)
 }

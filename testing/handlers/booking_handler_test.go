@@ -79,15 +79,15 @@ func TestAdminGetBookings(t *testing.T) {
 
 	defer db.Teardown()
 	var (
-		user    = fixtures.AddUser(db.Store, "james", "foo", false)
+		user    = fixtures.AddUser(db.Store, "james", "faa", false)
 		admin   = fixtures.AddUser(db.Store, "james", "foo", true)
 		hotel   = fixtures.AddHotel(db.Store, "bar hotel", "a", 4, nil)
 		room    = fixtures.AddRoom(db.Store, "small", true, 4.4, hotel.ID)
 		from    = time.Now()
 		till    = from.AddDate(0, 0, 5)
 		booking = fixtures.AddBooking(db.Store, user.ID, room.ID, from, till)
-		app     = fiber.New()
-		jtwapp  = app.Group("/", middleware.JWTAuthentication(db.User), middleware.AdminAuth)
+		app     = fiber.New(fiber.Config{ErrorHandler: api.ErrorHandler})
+		jwtapp  = app.Group("/", middleware.JWTAuthentication(db.User), middleware.AdminAuth)
 		_       = booking
 
 		bookinHandler = api.NewBookingHandler(db.Store)
@@ -95,7 +95,7 @@ func TestAdminGetBookings(t *testing.T) {
 
 	token := api.CreateTokenFromUser(admin)
 
-	jtwapp.Get("/", bookinHandler.HandleGetBookings)
+	jwtapp.Get("/", bookinHandler.HandleGetBookings)
 
 	req := httptest.NewRequest("GET", "/", nil)
 	req.Header.Add("x-api-token", token)
@@ -128,19 +128,14 @@ func TestAdminGetBookings(t *testing.T) {
 	}
 
 	// test non-admin cannot access the bookings
-	token = api.CreateTokenFromUser(user)
-
-	jtwapp.Get("/", bookinHandler.HandleGetBookings)
-
 	req = httptest.NewRequest("GET", "/", nil)
-	req.Header.Add("x-api-token", token)
+	req.Header.Add("X-Api-Token", api.CreateTokenFromUser(user))
 	resp, err = app.Test(req)
-
-	if resp.StatusCode == http.StatusOK {
-		t.Fatalf("expected a non 200 status code but got this: %d", resp.StatusCode)
-	}
 	if err != nil {
 		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusUnauthorized {
+		t.Fatalf("expected status unauthorized but got %d", resp.StatusCode)
 	}
 
 }

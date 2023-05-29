@@ -21,7 +21,7 @@ var (
 
 func main() {
 
-	user := fixtures.AddUser(store, "james", "foo", false)
+	user := fixtures.AddUser(store, "james", "seed", false)
 	fmt.Printf("%s -> %s\n", user.Email, api.CreateTokenFromUser(user))
 
 	fixtures.AddUser(store, "admin", "admin", true)

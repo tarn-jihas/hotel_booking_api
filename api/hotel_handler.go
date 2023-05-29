@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"hotel-reservation/db"
 
 	"github.com/gofiber/fiber/v2"
@@ -32,14 +31,13 @@ func (h *HotelHandler) HandleGetHotelRooms(c *fiber.Ctx) error {
 	}
 	rooms, err := h.store.Room.GetRooms(c.Context(), filter)
 	if err != nil {
-		return err
+		return ErrResourceNotFound("room")
 	}
 
 	return c.JSON(rooms)
 }
 
 func (h *HotelHandler) HandleGetHotels(c *fiber.Ctx) error {
-	fmt.Println("im here")
 	hotels, err := h.store.Hotel.GetHotels(c.Context(), nil)
 
 	if err != nil {
@@ -54,7 +52,7 @@ func (h *HotelHandler) HandleGetHotel(c *fiber.Ctx) error {
 	oid, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
-		return err
+		return ErrResourceNotFound("hotel")
 	}
 	hotel, err := h.store.Hotel.GetHotelByID(c.Context(), oid)
 
