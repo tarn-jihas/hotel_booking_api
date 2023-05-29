@@ -19,6 +19,7 @@ const (
 type UpdateUserParams struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
 }
 
 type AuthParams struct {
@@ -34,6 +35,10 @@ func (p UpdateUserParams) ToBSON() bson.M {
 	}
 	if len(p.LastName) > 0 {
 		m["lastName"] = p.LastName
+	}
+
+	if len(p.Email) > 0 {
+		m["email"] = p.Email
 	}
 
 	return m
@@ -79,6 +84,7 @@ func IsEmailValid(email string) bool {
 	return regex.MatchString(email)
 }
 
+// gotta do small refactorings to actually change the database if needed. Maybe add another id for postgre or smth?
 type User struct {
 	ID                primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	FirstName         string             `bson:"firstName" json:"firstName"`
