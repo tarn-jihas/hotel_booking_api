@@ -21,11 +21,11 @@ var (
 
 func main() {
 
-	user := fixtures.AddUser(store, "james", "seed", false)
+	user := fixtures.AddUser(store, "james", "normal", false)
 	fmt.Printf("%s -> %s\n", user.Email, api.CreateTokenFromUser(user))
 
-	fixtures.AddUser(store, "admin", "admin", true)
-
+	admin := fixtures.AddUser(store, "admin", "admin", true)
+	fmt.Printf("%s -> %s\n", admin.Email, api.CreateTokenFromUser(admin))
 	hotel := fixtures.AddHotel(store, "Auberine", "Asfall", 3.6, nil)
 	room := fixtures.AddRoom(store, "large", true, 55.55, hotel.ID)
 
