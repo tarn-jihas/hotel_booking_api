@@ -12,3 +12,12 @@ type Store struct {
 	Room    RoomStore
 	Booking BookingStore
 }
+
+type HotelPaginationQueryFilter struct {
+	Page  int64
+	Limit int64
+}
+
+type HotelQueryFilter struct {
+	Rating int64
+}
