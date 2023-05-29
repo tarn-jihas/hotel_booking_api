@@ -52,7 +52,6 @@ func TestAuthenticateSucess(t *testing.T) {
 	// Set the encrypted password to an empty string, because we do NOT return that in any
 	// JSON response
 	insertedUser.EncryptedPassword = ""
-
 	if !reflect.DeepEqual(insertedUser, aresp.User) {
 		t.Fatalf("Expected user needs to be the inserted user ")
 	}

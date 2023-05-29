@@ -122,11 +122,3 @@ func (s *MongoUserStore) GetUserByEmail(ctx context.Context, email string) (*typ
 
 	return &user, nil
 }
-
-func Sum_char_codes(n string) int {
-	sum := 0
-	for _, runeValue := range n {
-		sum += int(runeValue)
-	}
-	return sum
-}
