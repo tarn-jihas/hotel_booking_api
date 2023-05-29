@@ -34,7 +34,7 @@ func (h *UserHandler) HandlePutUser(c *fiber.Ctx) error {
 		return ErrBadRequest()
 	}
 
-	filter := db.Filter{
+	filter := db.Map{
 		"_id": oid,
 	}
 

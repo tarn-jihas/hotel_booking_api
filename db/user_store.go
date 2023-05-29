@@ -12,7 +12,7 @@ import (
 
 const userColl = "users"
 
-type Filter map[string]any
+type Map map[string]any
 
 type Dropper interface {
 	Drop(context.Context) error
@@ -24,7 +24,7 @@ type UserStore interface {
 	GetUsers(context.Context) ([]*types.User, error)
 	InsertUser(context.Context, *types.User) (*types.User, error)
 	DeleteUser(context.Context, string) error
-	UpdateUser(ctx context.Context, filter Filter, params types.UpdateUserParams) error
+	UpdateUser(ctx context.Context, filter Map, params types.UpdateUserParams) error
 	GetUserByEmail(ctx context.Context, email string) (*types.User, error)
 }
 
@@ -45,7 +45,7 @@ func NewMongoUserStore(client *mongo.Client) *MongoUserStore {
 	}
 }
 
-func (s *MongoUserStore) UpdateUser(ctx context.Context, filter Filter, params types.UpdateUserParams) error {
+func (s *MongoUserStore) UpdateUser(ctx context.Context, filter Map, params types.UpdateUserParams) error {
 
 	update := bson.D{
 		{Key: "$set", Value: params.ToBSON()},
