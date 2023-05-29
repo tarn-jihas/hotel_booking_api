@@ -6,15 +6,12 @@ import (
 	"hotel-reservation/db"
 	"hotel-reservation/types"
 	"log"
+	"os"
 	"testing"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-)
-
-const (
-	testDBName = "hotel-reservation-test"
-	testDBUri  = "mongodb://localhost:27017"
 )
 
 type Testdb struct {
@@ -23,7 +20,8 @@ type Testdb struct {
 }
 
 func (t *Testdb) Teardown() error {
-	if err := t.client.Database(db.DBNAME).Drop(context.TODO()); err != nil {
+	dbname := os.Getenv(db.MongoDBNmeEnvName)
+	if err := t.client.Database(dbname).Drop(context.TODO()); err != nil {
 		return err
 	}
 
@@ -31,7 +29,13 @@ func (t *Testdb) Teardown() error {
 
 }
 func Setup(t *testing.T) *Testdb {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(testDBUri))
+	if err := godotenv.Load("../../.env"); err != nil {
+		t.Error()
+	}
+
+	dburi := os.Getenv("MONGO_DB_URL_TEST")
+
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(dburi))
 	if err != nil {
 		log.Fatal(err)
 	}
