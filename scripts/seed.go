@@ -8,8 +8,10 @@ import (
 	"hotel-reservation/db/fixtures"
 	"log"
 	"math/rand"
+	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -43,13 +45,22 @@ func main() {
 
 func init() {
 
+	if err := godotenv.Load(); err != nil {
+		log.Fatal(err)
+	}
+
+	DBURL := os.Getenv("MONGO_DB_URL")
+	DBNAME := os.Getenv("MONGO_DB_NAME")
+	fmt.Println(DBURL)
+	fmt.Println(DBNAME)
+
 	var err error
-	client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI(db.DBURI))
+	client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI(DBURL))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err := client.Database(db.DBNAME).Drop(ctx); err != nil {
+	if err := client.Database(DBNAME).Drop(ctx); err != nil {
 		log.Fatal(err)
 	}
 

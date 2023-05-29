@@ -1,10 +1,6 @@
 package db
 
-const (
-	DBNAME     = "hotel-reservation"
-	TESTDBNAME = "hotel-reservation-test"
-	DBURI      = "mongodb://localhost:27017"
-)
+const MongoDBNmeEnvName = "MONGO_DB_NAME"
 
 type Store struct {
 	User    UserStore
@@ -16,8 +12,4 @@ type Store struct {
 type HotelPaginationQueryFilter struct {
 	Page  int64
 	Limit int64
-}
-
-type HotelQueryFilter struct {
-	Rating int64
 }
