@@ -45,3 +45,9 @@ go get github.com/gofiber/fiber/v2
 ```
 docker run --name mongodb -d mongo:latest -p 27017:27017
 ```
+## .env
+### Install godotenv to use .env
+```
+go install github.com/joho/godotenv/cmd/godotenv@latest
+
+```
